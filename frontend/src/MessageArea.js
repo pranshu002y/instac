@@ -3,12 +3,12 @@ import Cookies from 'js-cookie';
 import MessageSendBox from './MessageSendBox';
 import MessageElement from "./MessageElement";
 function MessageArea({children,userName,pp}) {
-
+  const { REACT_APP_API_PORT } = process.env;
     const [profiledata,setprofiledata] = useState();
   const cookieData = Cookies.get('userID');
   // console.log("pranshu",cookieData);
   useEffect(()=>{
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);

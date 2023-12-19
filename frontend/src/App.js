@@ -1,66 +1,39 @@
-import React, {useEffect} from "react";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import LoginPage from "./LoginPage";
-import InstagramLoading from "./InstagramLoading";
-import axios from 'axios';
-import {useDispatch, useSelector} from "react-redux";
-import {getLoginStatus, getUserProfile} from "./services/authService";
-import {SET_LOGIN, SET_USER} from "./redux/features/auth/authSlice";
-import {SET_LOADING} from "./redux/features/main/mainSlice";
-import Navbar from "./Navbar";
-import HomePage from "./HomePage";
-import Slider from "./Slider"
+import MessagesPage from "./MessagesPage";
 import SendMessageBox from "./SendMessageBox";
-import MessageArea from "../src/MessageArea";
-
-
-axios.defaults.withCredentials = true;
+import MessageArea from "./MessageArea";
+// import Create2 from "./Create2";
+import Search from "./Search";
+import Profile from "./Profile";
+import Explore from "./Explore";
+import Reels from "./Reels";
+import Notifications from "./Notifications";
+import Create from "./Create";
+import HomePage from "./HomePage";
+import Signup from "./Signup";
+import Createreel from "./Createreel";
 
 function App() {
-
-    const loading = useSelector((state) => state.main.loading)
-    const dispatch = useDispatch();
-    const checkLogin = useSelector((state) => state.auth.isLoggedIn)
-
-    useEffect(() => {
-        const setCheckLogin = async () => {
-            dispatch(SET_LOADING(true))
-            const status = await getLoginStatus();
-            await dispatch(SET_LOGIN(status))
-            dispatch(SET_LOADING(false))
-            dispatch(SET_LOADING(false))
-
-        }
-
-        async function setUserInfo() {
-            const first = await getUserProfile();
-            dispatch(SET_USER(first));
-        }
-
-        setCheckLogin()
-        setUserInfo()
-    }, [dispatch]);
-
-    return (
-        <div>
-            {loading ? <InstagramLoading/> : null}
-            {checkLogin ?
-                <Layout/>
-                :
-                <LoginPage/>
-            }
-
-            {/* <MessageArea/> */}
-             
-              {/* {loading ? <InstagramLoading/> : null}
-            {checkLogin ?
-                <LoginPage/>
-                :
-                <Layout/>
-            } */}
-            
-        </div>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/direct" element={<MessagesPage />} />
+      <Route path="/direct/new" element={<SendMessageBox />} />
+      <Route path="/direct/inbox/" element={<MessageArea />} />
+      <Route path="/homepage/loginpage" element={<LoginPage />} />
+      <Route path="/homepage/search" element={<Search />} />
+      <Route path="/homepage/profile" element={<Profile />} />
+      <Route path="/homepage/explore" element={<Explore />} />
+      <Route path="/homepage/reels" element={<Reels />} />
+      <Route path="/homepage/notifications" element={<Createreel />} />
+      <Route path="/homepage/create" element={<Create />} />
+      <Route path="/homepage" element={<Layout />} />
+      <Route path="/signup" element={<Signup />} />
+    </Routes>
+  );
 }
 
 export default App;

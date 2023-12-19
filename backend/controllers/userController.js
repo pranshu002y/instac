@@ -168,11 +168,29 @@ const logout = asyncHandler(async (req,res)=>{
 })
 
 // Get User
-const getUser = asyncHandler(async (req,res)=>{
-    const user = await User.findById(req.params.id)
+const getUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).populate({
+        path: 'posts',
+    });
 
-    if (user){
-        const {_id,name,userName,email,password,gender,privateAccount,ppLink,bio,followersId,followingId,messagingUsers,followingRequest,posts} = user
+    if (user) {
+        const {
+            _id,
+            name,
+            userName,
+            email,
+            password,
+            gender,
+            privateAccount,
+            ppLink,
+            bio,
+            followersId,
+            followingId,
+            messagingUsers,
+            followingRequest,
+            posts
+        } = user;
+
         res.status(200).json({
             _id,
             name,
@@ -186,13 +204,14 @@ const getUser = asyncHandler(async (req,res)=>{
             followingId,
             messagingUsers,
             followingRequest,
-            posts
-        })
-    }else{
-        res.status(400)
-        throw new Error("User not found")
+            posts  // The posts field will be populated with the actual post documents.
+        });
+    } else {
+        res.status(400);
+        throw new Error("User not found");
     }
-})
+});
+
 
 // Get Login Status
 const loginStatus = asyncHandler(async (req, res) => {
@@ -266,6 +285,8 @@ const searchUser = asyncHandler(async (req, res) => {
     }
 
 })
+
+
 
 
 

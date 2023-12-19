@@ -66,5 +66,32 @@ const getPostById= async(req,res)=>{
 
 }
 
-module.exports = {getAllPost,getPostById,createPost
+const createReel = async(req,res)=>{
+    const {caption,videoUrl,postedBy} = req.body;
+    try{
+        const newReel = await Post.create({
+            caption,videoUrl,postedBy
+        });
+        const user = await User.findybyId(postedBy);
+        user.posts.push(newReel._id);
+        await user.save();
+        res.status(201).json(newReel);
+        console.log(req.body)
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+const getReel = async(req,res)=>{
+    try{
+        const allReel = await Post.find();
+        res.status(200).json(allReel);
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+module.exports = {getAllPost,getPostById,createPost,createReel,getReel
 }

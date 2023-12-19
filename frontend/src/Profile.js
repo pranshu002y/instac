@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import "./Profile.css";
-import saru from "../src/photos/saru.jpg"
+
 import Gallery from "../src/Gallery";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import Navbar from "./Navbar"
 
-// import Sidebar from '../../Components/Sidebar/Sidebar'
-// import SettingIcon from "../src/Icons/Settingslogo.png"
-// import Explorepost from '../../Components/ExplorePost/Explorepost'
-// import { PostExplore } from '../../Components/data'
 export default function Profile() {
+  const { REACT_APP_API_PORT } = process.env;
   const [profiledata,setprofiledata] = useState();
+
   const cookieData = Cookies.get('userID');
+
   // console.log("pranshu",cookieData);
   useEffect(()=>{
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -25,7 +25,7 @@ export default function Profile() {
   
       setprofiledata(data)
      
-      // console.log("stdata",data);
+  
       
     })
     .catch(error => {
@@ -35,11 +35,26 @@ export default function Profile() {
     });
   },[]
   )
-  console.log("stdata",profiledata);
+  console.log("pranshu",profiledata);
 
   const navigate = useNavigate();
+
+
+
+  const handleLogout = async () => {
+    localStorage.removeItem("token")
+    navigate('/')
+}
+
   return (
     <div>
+      <div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
       <div>
         <div className="homesubcontainer">
           <div className="Profilerightbar">
@@ -73,7 +88,7 @@ export default function Profile() {
                   >
                     Edit profile
                   </button>
-                  <img src={"https://i.pinimg.com/originals/4d/e3/b0/4de3b0d729c8740204f76a2bfe1d5d7a.png"} style={{marginLeft:20 , cursor:"pointer", width:"50px"}} alt="" onClick={()=>navigate("/homepage/more")}/>
+                  <img src={"https://i.pinimg.com/originals/4d/e3/b0/4de3b0d729c8740204f76a2bfe1d5d7a.png"} style={{marginLeft:20 , cursor:"pointer", width:"50px"}} alt="" onClick={handleLogout}/>
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <p style={{ marginLeft: 100 }}>{profiledata && profiledata.posts.length || "1"}</p>
@@ -83,6 +98,7 @@ export default function Profile() {
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <p style={{ marginLeft: 100, marginTop: 10 }}>
                 {profiledata && profiledata.bio}
+                  
                   </p>
                 </div>
               </div>

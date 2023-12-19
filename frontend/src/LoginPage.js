@@ -7,18 +7,20 @@ import slide4 from "../src/photos/slide4.jpg"
 import slide5 from "../src/photos/slide5.jpg"
 import light from "../src/photos/insta light.png"
 import dark from "../src/photos/insta dark.png"
-import facebook from "../src/photos/facbook.png"
+import facebook from "../src/photos/facbook.png"  
 import pic3 from "../src/photos/pic3.png"
 import pic2 from "../src/photos/pic2.png"
 import {loginUser,getLoginStatus} from "./services/authService";
 import {useDispatch, useSelector} from "react-redux";
 import {SET_LOGIN} from "./redux/features/auth/authSlice";
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-
+const navigate = useNavigate();
+const { REACT_APP_API_PORT } = process.env;
   const dispatch = useDispatch();
-  const [announcement, setAnnouncement] = useState(true);
+ 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState(false);
   const [err, setErr] = useState("");
@@ -38,11 +40,18 @@ const LoginPage = () => {
           const data = await loginUser(input);
           if (!data.response){
              const status = await getLoginStatus();
+             Cookies.set('userID', data._id);
+             console.log("nidhi mc")
               if (status===true){
                  dispatch(SET_LOGIN(true))
-                  console.log(data)
-                  Cookies.set('userID', data._id);
+                  console.log(data,"hi1")
+           
+     
               }
+              // console.log(data,"logged")
+              navigate("/homepage")
+              console.log("nidhi mc")
+
           }else{
               setErr(data.response.data.message)
           }
@@ -57,10 +66,10 @@ const LoginPage = () => {
 
   const [slideIndex, setSlideIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [inputs, setInputs] = useState({
-    username: '',
-    password: ''
-  });
+  // const [inputs, setInputs] = useState({
+  //   username: '',
+  //   password: ''
+  // });
 
   const slide = () => {
     const slideItems = document.querySelectorAll('#slide-content img');
@@ -75,13 +84,13 @@ const LoginPage = () => {
     return () => clearInterval(interval);
   }, [slideIndex]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setInputs(prevState => ({
+  //     ...prevState,
+  //     [name]: value
+  //   }));
+  // };
 
   const handleShowPassword = () => {
     const passwordInput = document.querySelector('input[type="password"]');
@@ -92,14 +101,16 @@ const LoginPage = () => {
     }
   };
 
-  const checkSigninInput = () => {
-    return Object.values(inputs).every(value => value.trim().length >= 6);
-  };
+  // const checkSigninInput = () => {
+  //   return Object.values(inputs).every(value => value.trim().length >= 4);
+  // };
 
   const handleDarkModeToggle = (e) => {
     e.preventDefault();
     setIsDarkMode(prevState => !prevState);
   };
+
+  // console.log(REACT_APP_API_PORT)
 
   return (
     <div className={`container ${isDarkMode ? 'dark' : ''}`}>
@@ -160,8 +171,8 @@ const LoginPage = () => {
               </div>
             </div>
             <div className="box goto">
-              <p>
-                Don't have an account? <a href="https://www.instagram.com/accounts/emailsignup/">Sign up</a>
+              <p onClick={()=> navigate("/signup")}>
+                Don't have an account? Sign up
               </p>
             </div>
 

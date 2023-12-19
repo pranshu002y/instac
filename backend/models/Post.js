@@ -12,6 +12,10 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    videoUrl: {
+        type: String,
+        default:"dfh"
+    },
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,

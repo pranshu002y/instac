@@ -9,9 +9,10 @@ import MessageElement from "./MessageElement";
 import Cookies from 'js-cookie';
 import io from "socket.io-client";
 import SendMessageBox from "./SendMessageBox";
-const socket = io("http://localhost:4000/");
+const socket = io("http://localhost:4500/");
 
 function MessagesPage() {
+    const { REACT_APP_API_PORT } = process.env;
     const [isConnected, setIsConnected] = useState(socket.connected);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user)
@@ -96,7 +97,7 @@ function MessagesPage() {
   const cookieData = Cookies.get('userID');
   // console.log("pranshu",cookieData);
   useEffect(()=>{
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
