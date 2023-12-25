@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema({
+const reelSchema = new mongoose.Schema({
     caption: {
         type: String,
         trim: true
     },
-    image: {
-        type: String
-    },
+    
     postedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+    },
+    videoUrl: {
+        type: String,
+        default:"dfh"
     },
     likes: [
         {
@@ -43,4 +45,4 @@ const postSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Reel", reelSchema);

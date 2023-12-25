@@ -59,7 +59,7 @@ export default function Profile() {
         <div className="homesubcontainer">
           <div className="Profilerightbar">
             <div className="subProfilerightbar">
-              <div>
+              <div onClick={()=> navigate("/createstory")}>
                 <img
                   src={profiledata && profiledata.ppLink}
                   style={{
@@ -91,7 +91,7 @@ export default function Profile() {
                   <img src={"https://i.pinimg.com/originals/4d/e3/b0/4de3b0d729c8740204f76a2bfe1d5d7a.png"} style={{marginLeft:20 , cursor:"pointer", width:"50px"}} alt="" onClick={handleLogout}/>
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <p style={{ marginLeft: 100 }}>{profiledata && profiledata.posts.length || "1"}</p>
+                  <p style={{ marginLeft: 100 }}>{profiledata && profiledata.posts.length || "0"}</p>
                   <p style={{ marginLeft: 40 }}>200k Followers</p>
                   <p style={{ marginLeft: 40 }}>10k Following</p>
                 </div>

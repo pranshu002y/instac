@@ -23,11 +23,14 @@ const Reels = ()=>{
         setReels(data);
 
         console.log("stdata",data);
+        
       })
       .catch((error) => {
         console.error(error);
       });
+      
   }, []);
+  
     
 const handleVideoClick = (event) => {
   const video = event.target;
@@ -54,27 +57,30 @@ return (
     
  <div className="app__videos">
     
-
- <main >
+ {reels && reels.map((e) => (
+ <main key={e.id}>
     <div className="card-2">
-      <video autoPlay loop  onClick={handleVideoClick} src={reels && reels[5].videoUrl}/>
+      <video autoPlay loop  onClick={handleVideoClick} src={e.videoUrl}/>
       <div className="card-content">
         <h2></h2>
-       <p> hell</p> 
+       <p> {e.caption}</p> 
         <a href="#">
           
           <br />
           <span className="material-symbols-outlined">
-            Likes: {reels && reels[0].postedBy}
+            Likes: {e.postedBy}
           </span>
           <br></br>
           <span className="material-symbols-outlined">
-            Comments: {reels && reels[0]._id}
+            Comments: {e._id}
           </span>
         </a>
       </div>
     </div>
   </main>
+ ))}
+
+  
 
   
  

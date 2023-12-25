@@ -32,17 +32,49 @@ function PostArea() {
         console.error(error);
       });
   }, []);
+
+
+  const [allusers,setallusers] = useState();
+  // const cookieData = Cookies.get('userID');
+  // console.log("pranshu",cookieData);
+  useEffect(()=>{
+    fetch(`${REACT_APP_API_PORT}/users/getalluser`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then(data => {
+  
+      setallusers(data)
+     
+      // console.log("stdata",data);
+      
+    })
+    .catch(error => {
+     
+      console.error(error);
+     
+    });
+  },[]
+  )
+  
   return (
     <div>
+      
+      {/* {allusers && allusers.map((e)=>{
+        return(
       <PostElement
         mediaType="video"
         media={video1}
         likeCount="10"
-        profilePicture={test_pp_icon}
+        profilePicture={e.ppLink}
         time="6s"
-        username="akash_bsdka"
+        username={e.userName}
         explanation="awwww"
-      />
+      /> ) })} */}
+
       {profiledata && profiledata.map((e)=>{
         return(
         

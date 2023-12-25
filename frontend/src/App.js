@@ -5,17 +5,15 @@ import LoginPage from "./LoginPage";
 import MessagesPage from "./MessagesPage";
 import SendMessageBox from "./SendMessageBox";
 import MessageArea from "./MessageArea";
-// import Create2 from "./Create2";
 import Search from "./Search";
 import Profile from "./Profile";
 import Explore from "./Explore";
 import Reels from "./Reels";
-import Notifications from "./Notifications";
 import Create from "./Create";
-import HomePage from "./HomePage";
 import Signup from "./Signup";
 import Createreel from "./Createreel";
-
+import Createstory from "./Createstory";
+import Storylayout from "./Storylayout";
 function App() {
   return (
     <Routes>
@@ -32,6 +30,8 @@ function App() {
       <Route path="/homepage/create" element={<Create />} />
       <Route path="/homepage" element={<Layout />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/createstory" element={<Createstory />} />
+      <Route path="/storylayout" element={<Storylayout />} />
     </Routes>
   );
 }

@@ -5,8 +5,9 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Iconsfromcreatemodal from "../src/Icons/Icon to represent media such as images or videos.png";
 import Navbar from "./Navbar";
-const Createreel = () => {
-  const [videoUrl, setvideoUrl] = useState([]);
+
+const Createstory = () => {
+  const [imageUrl, setImageUrl] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -35,7 +36,7 @@ const Createreel = () => {
 
       formData.append("upload_preset", "ml_default");
       const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dzvxsgooe/video/upload",
+        "https://api.cloudinary.com/v1_1/dzvxsgooe/image/upload",
         {
           method: "POST",
           body: formData,
@@ -48,7 +49,7 @@ const Createreel = () => {
 
       const data = await response.json();
 
-      setvideoUrl((video) => [...video, data.secure_url]);
+      setImageUrl((prevImage) => [...prevImage, data.secure_url]);
       console.log(data.secure_url);
 
       setLoading(false);
@@ -61,14 +62,14 @@ const Createreel = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     navigate("/homepage");
-    if (videoUrl.length === 0) {
+    if (imageUrl.length === 0) {
       console.error("No image to save");
       return;
     }
 
     try {
       const def = {
-        videoUrl: videoUrl[0],
+        storyUrl: imageUrl[0],
         caption: data.caption,
         postedBy: cookieData,
         // Adjust this if you want to handle multiple images
@@ -77,7 +78,7 @@ const Createreel = () => {
       console.log(def, "msg");
       // Make an API call to send the image URL to the backend
       const response = await axios.post(
-        `${REACT_APP_API_PORT}/post/createReel`,
+        `${REACT_APP_API_PORT}/post/createstory`,
         def
       );
 
@@ -94,15 +95,15 @@ const Createreel = () => {
   console.log(data, "author");
 
   return (
-    <div>
-        <div className="homepage-box-container">
+    
+<div>
+<div className="homepage-box-container">
                 <div>
                     <div className="homepage-navbar">
                         <Navbar/>
                     </div>
                 </div>
         </div>
-
     <div className="eventpopup">
       <div className="AddDepartment_desc">
         <span>Create a New Post</span>
@@ -139,7 +140,7 @@ const Createreel = () => {
                   type="file"
                   name="file"
                   id="file"
-                  accept="video/*"
+                  accept="image/*"
                   onChange={handleImageupload}
                   style={{ display: "none" }}
                 />
@@ -167,7 +168,7 @@ const Createreel = () => {
                     borderRadius: 4,
                   }}
                   onClick={handleSave}
-                  disabled={videoUrl.length === 0 || loading}
+                  disabled={imageUrl.length === 0 || loading}
                 >
                   Post Image
                 </button>
@@ -183,4 +184,5 @@ const Createreel = () => {
 };
 
 
-export default Createreel;
+
+export default Createstory;

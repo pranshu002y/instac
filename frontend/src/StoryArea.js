@@ -13,6 +13,7 @@ import StoryElement from "./StoryElement";
 function StoryArea() {
     const { REACT_APP_API_PORT } = process.env;
     const [profiledata,setprofiledata] = useState();
+    const [story,setstory] = useState();
     const cookieData = Cookies.get('userID');
     // console.log("pranshu",cookieData);
     useEffect(()=>{
@@ -27,7 +28,7 @@ function StoryArea() {
     
         setprofiledata(data)
        
-        // console.log("stdata",data);
+
         
       })
       .catch(error => {
@@ -37,6 +38,30 @@ function StoryArea() {
       });
     },[]
     )
+
+
+    useEffect(()=>{
+        fetch(`${REACT_APP_API_PORT}/post/getstory`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+      
+          setstory(data)
+         
+          // console.log("stdata",data);
+          
+        })
+        .catch(error => {
+         
+          console.error(error);
+         
+        });
+      },[]
+      )
 
 
     const scrollRef = useRef();
@@ -61,30 +86,19 @@ function StoryArea() {
             <div>
                 <div className="story-left-button" onClick={scrollLeft}><img src={left} alt="left"/></div>
                 <div className="story-area-box" ref={scrollRef}>
-                    <StoryElement profilePicture={kalra}>
-                        pranshu yadav
-                    </StoryElement>
-                    <StoryElement profilePicture=  {profiledata && profiledata.ppLink}>
+
+                <StoryElement profilePicture=  {profiledata && profiledata.ppLink}>
                        {profiledata && profiledata.userName}
                     </StoryElement>
-                    <StoryElement profilePicture={bsdka}>
-                        aryan
-                    </StoryElement>
-                    <StoryElement profilePicture={kalra}>
-                       alkayda
-                    </StoryElement>
-                    <StoryElement profilePicture={ap}>
-                       kutta
-                    </StoryElement>
-                    <StoryElement profilePicture={bsdka}>
-                       bsdka
-                    </StoryElement>
-                    <StoryElement profilePicture={ap}>
-                        ganda
-                    </StoryElement>
-                    <StoryElement profilePicture={kalra} checkOpen={true}>
-                       linked
-                    </StoryElement>
+
+                    {story && story.map((e)=>{
+                        return(
+                    <StoryElement profilePicture={e.storyUrl}>
+                       {e.caption}
+                    </StoryElement>)})}
+                    
+                   
+                    
 
                 </div>
                 <div className="story-right-button" onClick={scrollRight}><img src={right} alt="right"/></div>

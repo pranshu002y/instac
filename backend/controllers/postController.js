@@ -1,5 +1,7 @@
 const Post =require('../models/Post');
 const User=require('../models/userModel')
+const Reel=require('../models/Reels');
+const Story = require('../models/Story');
 
 const createPost= async(req,res)=>{
     
@@ -69,7 +71,7 @@ const getPostById= async(req,res)=>{
 const createReel = async(req,res)=>{
     const {caption,videoUrl,postedBy} = req.body;
     try{
-        const newReel = await Post.create({
+        const newReel = await Reel.create({
             caption,videoUrl,postedBy
         });
         const user = await User.findybyId(postedBy);
@@ -85,13 +87,40 @@ const createReel = async(req,res)=>{
 
 const getReel = async(req,res)=>{
     try{
-        const allReel = await Post.find();
+        const allReel = await Reel.find();
         res.status(200).json(allReel);
+    }   
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+const createStory = async(req,res)=>{
+    const {caption,storyUrl,postedBy}= req.body;
+    try{
+        const newstory = await Story.create({
+            caption,storyUrl,postedBy
+        });
+        const user = await User.findById(postedBy);
+        user.post.push(newstory._id);
+        await user.save();
+        res.status(201).json(newstory);
     }
     catch(error){
         res.status(500).json({message:error.message})
     }
 }
 
-module.exports = {getAllPost,getPostById,createPost,createReel,getReel
+const getStory = async(req,res)=>{
+    try{
+        const allStory = await Story.find();
+        res.status(200).json(allStory);
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
+
+module.exports = {getStory,createStory,getAllPost,getPostById,createPost,createReel,getReel
 }
