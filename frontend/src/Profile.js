@@ -12,7 +12,6 @@ export default function Profile() {
 
   const cookieData = Cookies.get('userID');
 
-  // console.log("pranshu",cookieData);
   useEffect(()=>{
     fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
@@ -38,8 +37,6 @@ export default function Profile() {
   console.log("pranshu",profiledata);
 
   const navigate = useNavigate();
-
-
 
   const handleLogout = async () => {
     localStorage.removeItem("token")
@@ -67,6 +64,8 @@ export default function Profile() {
                     height: "150px",
                     objectFit: "cover",
                     borderRadius: "50%",
+                    padding:"5px",
+                    border:"2px solid skyblue"
                   }}
                   alt=""
                 />
