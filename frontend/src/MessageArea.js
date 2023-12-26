@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import MessageSendBox from './MessageSendBox';
 import MessageElement from "./MessageElement";
+import Navbar from "./Navbar";
+import MessagesPage from "./MessagesPage";
+
 function MessageArea({children,userName,pp}) {
   const { REACT_APP_API_PORT } = process.env;
-    const [profiledata,setprofiledata] = useState();
+  const [profiledata,setprofiledata] = useState();
+
   const cookieData = Cookies.get('userID');
-  // console.log("pranshu",cookieData);
+
+
   useEffect(()=>{
     fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
@@ -19,7 +24,7 @@ function MessageArea({children,userName,pp}) {
   
       setprofiledata(data)
      
-      // console.log("stdata",data);
+  
       
     })
     .catch(error => {
@@ -29,23 +34,35 @@ function MessageArea({children,userName,pp}) {
     });
   },[]
   )
-  
+  console.log("pranshu",profiledata);
+
 
     return (
-      // <div className="lets-start">
- <div className="message-page-message-area-container">
+
+      <div>
+        <div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
+        <div className="message-page-message-area-container">
             <div className="message-page-message-area-upper-bar">
-                <img className="message-page-message-area-pp" src={pp} alt="pp"/>
-                <div>{userName}</div>
+                <img className="message-page-message-area-pp" src={profiledata && profiledata.ppLink} alt="pp"/>
+                <div>{profiledata && profiledata.userName}</div>
             </div>
+            
+     
             <div className="message-page-message-area-messaging-area">
                 {children}
-               
             </div>
+           
+            
      
         </div>
-
-      // </div>
+      </div>
+      
        
     );
 }
