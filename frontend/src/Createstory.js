@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 import Iconsfromcreatemodal from "../src/Icons/Icon to represent media such as images or videos.png";
 import Navbar from "./Navbar";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const Createstory = () => {
   const [imageUrl, setImageUrl] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,6 +66,7 @@ const Createstory = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     navigate("/homepage");
+   
     if (imageUrl.length === 0) {
       console.error("No image to save");
       return;
@@ -84,11 +89,13 @@ const Createstory = () => {
 
       // Handle the response from the backend
       console.log("Save operation complete", response.data);
-
+     
       // Redirect to the homepage
       navigate("/homepage");
+      toast.success("Post created successfully!");
     } catch (err) {
       console.error(err, "Save operation failed");
+      toast.error("Failed to create post. Please try again.");
     }
   };
 
@@ -97,6 +104,7 @@ const Createstory = () => {
   return (
     
 <div>
+<ToastContainer />
 <div className="homepage-box-container">
                 <div>
                     <div className="homepage-navbar">
