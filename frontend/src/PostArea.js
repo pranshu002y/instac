@@ -7,13 +7,16 @@ import bsdka from "../src/photos/bsdka.jpg";
 import saru from "../src/photos/saru.jpg";
 import test_post_video from "./posts/beautiful-nature-view-status-video-with-song-natureshort-shorts-854-ytshorts.savetube.me.mp4";
 import Cookies from "js-cookie";
+import video1 from "./posts/qw1.mp4";
+import video2 from "./posts/qw2.mp4";
 
 function PostArea() {
   const [profiledata, setprofiledata] = useState();
-  const cookieData = Cookies.get("userID");
+  // const cookieData = Cookies.get("userID");
   // console.log("pranshu",cookieData);
+  const { REACT_APP_API_PORT } = process.env;
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/post/getpost`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -23,49 +26,69 @@ function PostArea() {
       .then((data) => {
         setprofiledata(data);
 
-        // console.log("stdata",data);
+        console.log("stdata",data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
+
+
+  const [allusers,setallusers] = useState();
+  // const cookieData = Cookies.get('userID');
+  // console.log("pranshu",cookieData);
+  useEffect(()=>{
+    fetch(`${REACT_APP_API_PORT}/users/getalluser`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then(data => {
+  
+      setallusers(data)
+     
+      // console.log("stdata",data);
+      
+    })
+    .catch(error => {
+     
+      console.error(error);
+     
+    });
+  },[]
+  )
+  
   return (
     <div>
+      
+      {/* {allusers && allusers.map((e)=>{
+        return(
       <PostElement
-        media={bsdka}
+        mediaType="video"
+        media={video1}
+        likeCount="10"
+        profilePicture={e.ppLink}
+        time="6s"
+        username={e.userName}
+        explanation="awwww"
+      /> ) })} */}
+
+      {profiledata && profiledata.map((e)=>{
+        return(
+        
+      <PostElement
+        media={e.image}
         likeCount="10"
         profilePicture={bsdka}
         time="6s"
         username="pranshu"
-        explanation="growing age..."
+        explanation={e.postedBy}
       />
-      <PostElement
-        media={ap}
-        likeCount="10"
-        profilePicture={ap}
-        time="1hr"
-        username="_arpita.rai"
-        explanation="coming soon..."
-      />
-      <PostElement
-        media={kalra}
-        likeCount="10"
-        profilePicture={kalra}
-        time="15s"
-        username="kalra"
-        explanation="flaw..."
-      />
-
-      <PostElement
-        media={saru}
-        likeCount="100"
-        profilePicture={saru}
-        time="1s"
-        username="akankshaaa_.04 "
-        explanation="Aryan:❤💦"
-      />
-
-      <PostElement
+ ) })}
+      
+      {/* <PostElement
         media={
           "https://media.licdn.com/dms/image/C4D03AQET4T3BYPfIhA/profile-displayphoto-shrink_400_400/0/1656661976834?e=1691625600&v=beta&t=ZiUHdgEd1n5gm7CP35Mjs78irju6EEkY1hap0bIaQAo"
         }
@@ -74,15 +97,15 @@ function PostArea() {
         time="15s"
         username="Eshika Singha "
         explanation="aaaashuuuuuu..💔."
-      />
+      /> */}
 
       <PostElement
         mediaType="video"
-        media={test_post_video}
+        media={video2}
         likeCount="10"
         profilePicture={test_pp_icon}
         time="6s"
-        username="akash_bsdka"
+        username="meowsarchod"
         explanation="awwww"
       />
     </div>

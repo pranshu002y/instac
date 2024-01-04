@@ -10,7 +10,7 @@ const errorHandler = require("./middleWares/errorMiddleware")
 const cookieParser = require("cookie-parser")
 const app = express();
 const http = require("http");
-const SOCKET_PORT = 4000;
+const SOCKET_PORT = 4500;
 const server = http.createServer(app);
 const io = require('socket.io')(server, {cors: {origin: 'http://localhost:3000',credentials:true}});
 
@@ -60,7 +60,7 @@ app.use(errorHandler);
 
 
 // connect to DB
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 mongoose
     .connect(process.env.MONGO_URI)
     .then(()=>{

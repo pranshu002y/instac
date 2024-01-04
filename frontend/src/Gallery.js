@@ -1,23 +1,36 @@
-import React,{useState} from "react";
-import "./Gallery.css"
-const Gallery = () => {
-    const [modalActive, setModalActive] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
+import React, { useEffect, useState } from "react";
+import "./Profile.css";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+import Navbar from "./Navbar";
+import "./Gallery.css";
 
-  const images = [
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292319/1683460340018_y3ha0u.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292681/imarohikhajuria-20230609-0001_vqp9a9.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292681/imarohikhajuria-20230609-0001_hjvbo5.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292681/imarohikhajuria-20230609-0001_hjvbo5.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292681/imarohikhajuria-20230609-0002_r1ak2k.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292682/imarohikhajuria-20230609-0002_uackd5.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292683/Snapchat-1113367730_uwviav.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292683/imarohikhajuria-20230609-0003_iu5jjw.jpg',
-    'https://res.cloudinary.com/dpiatasuq/image/upload/v1686292690/Snapchat-1909245334_np4qvt.jpg',
-  ];
+const Gallery = () => {
+  const { REACT_APP_API_PORT } = process.env;
+  const [profiledata, setprofiledata] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const cookieData = Cookies.get('userID');
+  const navigate = useNavigate();
+  const [modalActive, setModalActive] = useState(false);
+
+  useEffect(() => {
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setprofiledata(data.posts); // Assuming data is an object with a 'posts' property
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   const openModal = (imageSrc) => {
-    setSelectedImage(imageSrc);
+    setSelectedImage(imageSrc.image); // Assuming each item has an 'image' property
     setModalActive(true);
   };
 
@@ -25,20 +38,17 @@ const Gallery = () => {
     setModalActive(false);
   };
 
-  
   return (
-   
     <div className="lets">
-      <div  onClick={closeModal} className={`modal ${modalActive ? 'active' : ''}`}>
-        {/* <button className="btn" ></button> */}
+      <div onClick={closeModal} className={`modal ${modalActive ? 'active' : ''}`}>
         {selectedImage && <img src={selectedImage} alt="Selected" className="selected" />}
       </div>
       <section className="main">
         <div className="grid">
-          {images.map((imageSrc, index) => (
+          {profiledata.map((imageSrc, index) => (
             <img
               key={index}
-              src={imageSrc}
+              src={imageSrc.image} // Assuming each item has an 'image' property
               alt={`Image ${index}`}
               onClick={() => openModal(imageSrc)}
             />

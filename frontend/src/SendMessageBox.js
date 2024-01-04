@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import MessagesPageUsers from "./MessagesPageUsers";
+import Navbar from './Navbar';
 import {searchUser} from "./services/authService";
 import {sendMessage} from "./services/messageService";
 
@@ -15,6 +16,13 @@ function SendMessageBox() {
 
     return (
         <div>
+            <div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
             <Link to="/direct/inbox/"><div className="message-page-send-message-box-background"></div></Link>
             <div className="message-page-send-message-box-container">
                 <div className="message-page-send-message-box-upper-area">

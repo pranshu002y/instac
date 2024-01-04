@@ -9,9 +9,11 @@ import MessageElement from "./MessageElement";
 import Cookies from 'js-cookie';
 import io from "socket.io-client";
 import SendMessageBox from "./SendMessageBox";
-const socket = io("http://localhost:4000/");
+import Navbar from './Navbar';
+const socket = io("http://localhost:4500/");
 
 function MessagesPage() {
+    const { REACT_APP_API_PORT } = process.env;
     const [isConnected, setIsConnected] = useState(socket.connected);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user)
@@ -96,7 +98,7 @@ function MessagesPage() {
   const cookieData = Cookies.get('userID');
   // console.log("pranshu",cookieData);
   useEffect(()=>{
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -117,13 +119,20 @@ function MessagesPage() {
     });
   },[]
   )
-//   console.log("stdata",profiledata);
+
 
     return (
         <div>
             <Routes>
                 <Route path="/direct/new" element={<SendMessageBox/>} />
             </Routes>
+            <div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
             <div className="message-page-container">
                 <div className="message-page-main-area">
                     <div className="message-page-left-area">
@@ -185,7 +194,7 @@ function MessagesPage() {
                                         <path
                                             d="M15.83 10.997a1.167 1.167 0 1 0 1.167 1.167 1.167 1.167 0 0 0-1.167-1.167Zm-6.5 1.167a1.167 1.167 0 1 0-1.166 1.167 1.167 1.167 0 0 0 1.166-1.167Zm5.163 3.24a3.406 3.406 0 0 1-4.982.007 1 1 0 1 0-1.557 1.256 5.397 5.397 0 0 0 8.09 0 1 1 0 0 0-1.55-1.263ZM12 .503a11.5 11.5 0 1 0 11.5 11.5A11.513 11.513 0 0 0 12 .503Zm0 21a9.5 9.5 0 1 1 9.5-9.5 9.51 9.51 0 0 1-9.5 9.5Z"></path>
                                     </svg>
-                                    <textarea style={{height:"inherit",marginTop:"0.8%",maxHeight:"50%"}} value={text} onKeyDown={pressEnter} placeholder="Message..." className="message-box" onChange={event=>{setText(event.target.value);}}>
+                                    <textarea style={{height:"inherit",marginTop:"0.8%",maxHeight:"50%", border:"2px solid red"}} value={text} onKeyDown={pressEnter} placeholder="Message..." className="message-box" onChange={event=>{setText(event.target.value);}}>
             </textarea>
                                     {text.length!==0?
                                         <div style={{fontWeight:"bold", marginRight:"10px",color:"#0095F6"}}>Send</div>

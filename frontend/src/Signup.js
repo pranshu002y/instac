@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './signup.css'
 import { registerUser } from './services/authService';
+import { useNavigate } from 'react-router-dom';
 // name,userName,email,password,gender
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -44,8 +45,10 @@ function SignUpPage() {
     }
     console.log("first",formData)
     registerUser(formData);
+    navigate("/")
 
   };
+  const navigate = useNavigate();
 
   return (
     <main>
@@ -53,7 +56,7 @@ function SignUpPage() {
         <div className="header">
           <h1 className="logo">Instagram</h1>
           <p>Sign up to see photos and videos from your friends.</p>
-          <button><i className="fab fa-facebook-square"></i> Log in with Facebook</button>
+          <button onClick={()=> navigate("/")}><i className="fab fa-facebook-square"></i> Log in </button>
           <div>
             <hr />
             <p>OR</p>

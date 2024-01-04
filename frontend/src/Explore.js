@@ -3,11 +3,19 @@ import "./Explore.css"
 import bsdka from "../src/photos/bsdka.jpg"
 import ap from "../src/photos/ap.jpg"
 import saru from "../src/photos/saru.jpg"
+import Navbar from "./Navbar";
 
 
 const Explore = ()=>{
     return(
         <div>
+          <div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
             <div></div>
             <div className="image-gallery">
       <div className="image-box">

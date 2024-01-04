@@ -1,7 +1,8 @@
 import axios from 'axios';
+const { REACT_APP_API_PORT } = process.env;
 export async function createPost(data) {
     try {
-        const response = await axios.post("http://localhost:5000/api/post/createpost", data);
+        const response = await axios.post(`${REACT_APP_API_PORT}/post/createpost`, data);
         return response.data;
     } catch (error) {
         return error;
@@ -9,7 +10,7 @@ export async function createPost(data) {
 }
 export async function getAllPosts() {
     try {
-        const response = await axios.get("http://localhost:5000/api/getpost");
+        const response = await axios.get(`${REACT_APP_API_PORT}/post/getpost`);
         return response.data;
     } catch (error) {
         return error;
@@ -18,7 +19,7 @@ export async function getAllPosts() {
 
 export async function getPostById(id) {
     try {
-        const response = await axios.get(`http://localhost:5000/api/getpost/${id}`);
+        const response = await axios.get(`${REACT_APP_API_PORT}/post/getpost/${id}`);
         return response.data;
     } catch (error) {
         return error;

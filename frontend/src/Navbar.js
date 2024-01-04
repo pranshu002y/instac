@@ -13,12 +13,12 @@ import { useEffect } from "react";
 import Cookies from 'js-cookie';
 
 function Navbar() {
-
+  const { REACT_APP_API_PORT } = process.env;
   const [profiledata,setprofiledata] = useState();
   const cookieData = Cookies.get('userID');
   // console.log("pranshu",cookieData);
   useEffect(()=>{
-    fetch(`http://localhost:5000/api/users/getuser/${cookieData}`)
+    fetch(`${REACT_APP_API_PORT}/users/getuser/${cookieData}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -56,7 +56,7 @@ function Navbar() {
     <div>
       {popupState && <More setPopupstate={setPopupState} />}
       <div className="instagram-logo">
-        <Link to="/">
+        <Link to="/homepage">
           <div className="main-logo">
             {largePage && (
               <img className="big-logo" src={big_logo} alt="logo" />
@@ -68,7 +68,7 @@ function Navbar() {
         </Link>
       </div>
       <div className="nav-items">
-        <Link to="/">
+        <Link to="/homepage">
           <NavbarItem name={"Home"}>
             <path
               d="M9.005 16.545a2.997 2.997 0 0 1 2.997-2.997A2.997 2.997 0 0 1 15 16.545V22h7V11.543L12 2 2 11.543V22h7.005Z"
@@ -231,7 +231,7 @@ function Navbar() {
             Profile
           </div>
         </Link>
-        <Link to="/">
+        <Link to="/homepage">
           <div
             className="navbar-mobile-custom"
             style={{ position: "absolute", bottom: "50px" }}

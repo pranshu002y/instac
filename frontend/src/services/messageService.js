@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {getUserProfile} from "./authService";
-
+const { REACT_APP_API_PORT } = process.env;
 
 
 export const getBasicInfo = async (data) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/users/getinfo", data);
+        const response = await axios.post(`${REACT_APP_API_PORT}/users/getinfo`, data);
         return response.data;
 
     } catch (error) {
@@ -64,7 +64,7 @@ try {
 export const getMessages = async (userName) => {
     const data = {otherUserName:userName}
     try {
-        const response = await axios.post("http://localhost:5000/api/message/getmessages", data);
+        const response = await axios.post(`${REACT_APP_API_PORT}/message/getmessages`, data);
         return response.data;
 
     } catch (error) {
@@ -76,7 +76,7 @@ export const getMessages = async (userName) => {
 export const sendMessage = async (userName,text) => {
     const data = {otherUserName:userName,text:text}
     try {
-        const response = await axios.post("http://localhost:5000/api/message/sendmessage", data);
+        const response = await axios.post(`${REACT_APP_API_PORT}/message/sendmessage`, data);
         return response.data;
 
     } catch (error) {

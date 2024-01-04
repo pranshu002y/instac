@@ -4,12 +4,18 @@ import "./Create.css";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Iconsfromcreatemodal from "../src/Icons/Icon to represent media such as images or videos.png";
-const Create = () => {
+import Navbar from "./Navbar";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+const Createstory = () => {
   const [imageUrl, setImageUrl] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState({
-    userName: "",
+    caption: "",
   });
 
   const cookieData = Cookies.get("userID");
@@ -60,6 +66,7 @@ const Create = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     navigate("/homepage");
+   
     if (imageUrl.length === 0) {
       console.error("No image to save");
       return;
@@ -67,8 +74,8 @@ const Create = () => {
 
     try {
       const def = {
-        image: imageUrl[0],
-        userName: data.userName,
+        storyUrl: imageUrl[0],
+        caption: data.caption,
         postedBy: cookieData,
         // Adjust this if you want to handle multiple images
       };
@@ -76,17 +83,19 @@ const Create = () => {
       console.log(def, "msg");
       // Make an API call to send the image URL to the backend
       const response = await axios.post(
-        `${REACT_APP_API_PORT}/post/createpost`,
+        `${REACT_APP_API_PORT}/post/createstory`,
         def
       );
 
       // Handle the response from the backend
       console.log("Save operation complete", response.data);
-
+     
       // Redirect to the homepage
       navigate("/homepage");
+      toast.success("Post created successfully!");
     } catch (err) {
       console.error(err, "Save operation failed");
+      toast.error("Failed to create post. Please try again.");
     }
   };
 
@@ -94,7 +103,15 @@ const Create = () => {
 
   return (
     
-
+<div>
+<ToastContainer />
+<div className="homepage-box-container">
+                <div>
+                    <div className="homepage-navbar">
+                        <Navbar/>
+                    </div>
+                </div>
+        </div>
     <div className="eventpopup">
       <div className="AddDepartment_desc">
         <span>Create a New Post</span>
@@ -131,7 +148,7 @@ const Create = () => {
                   type="file"
                   name="file"
                   id="file"
-                  accept="image/*,video/*"
+                  accept="image/*"
                   onChange={handleImageupload}
                   style={{ display: "none" }}
                 />
@@ -142,9 +159,9 @@ const Create = () => {
                   className="input-email"
                   id="emailInput"
                   placeholder="Enter your text"
-                  value={data.userName}
+                  value={data.caption}
                   onChange={(e) =>
-                    setData({ ...data, userName: e.target.value })
+                    setData({ ...data, caption: e.target.value })
                   }
                 />
               </div>
@@ -170,7 +187,10 @@ const Create = () => {
         </div>
       </div>
     </div>
+    </div>
   );
 };
 
-export default Create;
+
+
+export default Createstory;
